@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./mysql/index.js && nodemon ./api/index.js"
+
+    "start": "node index.js && node mysql/index.js"
   },
   "keywords": [],
   "author": "",
