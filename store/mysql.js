@@ -40,12 +40,15 @@ function get (table, id) {
 }
 
 function insert (table, data) {
-  console.log(table, data);
+  const keys = Object.keys(data).join(',');
+  const values = Object.values(data);
+
   return new Promise((resolve, reject) => {
-    connection.query(`INSERT INTO ${table} SET ?`, data, (err, result) => {
+    connection.query(`INSERT INTO ${table} (${keys}) VALUES (?);`, [values], (err, result, fields) => {
       if (err) return reject(err);
       console.log(result);
       console.log(err);
+      console.log(fields);
       resolve(data);
     });
   });
@@ -54,7 +57,7 @@ function insert (table, data) {
 function update (table, data) {
   console.log(table, data);
   return new Promise((resolve, reject) => {
-    connection.query(`UPDATE ${table} SET ? WHERE Id = ?`, [data, data.id], (err, result) => {
+    connection.query(`UPDATE ${table} SET ? WHERE Id = ?`, [{ ...data, updatedAt: new Date() }, data.id], (err, result) => {
       if (err) return reject(err);
       console.log(result);
       console.log(err);
@@ -74,18 +77,21 @@ function remove (table, id) {
   });
 }
 function query (table, query, join) {
+  // console.log('oaaaaaaaa', { table, query, join });
   let joinQuery = '';
+  let columns = `${table}.*`;
   if (join) {
     const key = Object.keys(join)[0];
     const val = join[key];
-    joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`;
+    columns += `, ${key}.*`;
+    joinQuery = `JOIN ${key} ON ${key}.${val} = ${table}.id`;
   }
-
+  console.log(columns);
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`, query, (err, res) => {
+    connection.query(`SELECT ${columns} FROM ${table} ${joinQuery} WHERE ${table}.?`, query, (err, res) => {
       if (err) return reject(err);
       console.log(res);
-      resolve({ ...res[0] } || null);
+      resolve({ ...res } || null);
     });
   });
 }

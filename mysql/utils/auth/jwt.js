@@ -20,6 +20,7 @@ function getToken (auth) {
   return auth.replace('Bearer ', '');
 }
 export function decodeHeader (req, res, next) {
+  console.log('[getToken]');//, req.headers);
   const authorization = req.headers.authorization ?? '';
   const token = getToken(authorization);
   const decoded = verify(token);

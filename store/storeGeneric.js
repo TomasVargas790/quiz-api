@@ -1,4 +1,4 @@
-import RemoteDataBaseCall from './generic.js';
+import RemoteDataBaseCall from './genericIntercepted.js';
 
 import { env } from '../config.js';
 

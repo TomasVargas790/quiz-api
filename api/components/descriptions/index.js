@@ -1,8 +1,6 @@
 import ctrl from './controller.js';
 import storeGeneric from '../../../store/storeGeneric.js';
 
-console.log('[ctrl]', ctrl(storeGeneric));
-console.log('[storeGeneric]', storeGeneric);
 export default ctrl(storeGeneric);
 
 /*
