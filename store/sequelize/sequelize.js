@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 
 import { env } from '../../config.js';
-import setupModels from './../db/models';
+import setupModels from '../../db/models/index.js';
 
 const options = {
   dialect: 'mysql',

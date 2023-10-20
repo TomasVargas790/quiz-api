@@ -10,17 +10,17 @@ const DescriptionSchema = {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  description: {
-    allowNull: false,
-    type: DataTypes.STRING,
-    unique: true
-  },
   title: {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true
   },
-  theme: {
+  description: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    unique: true
+  },
+  themeId: {
     type: DataTypes.INTEGER,
     references: {
       model: THEME_TABLE,

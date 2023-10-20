@@ -31,7 +31,7 @@ class Theme extends Model {
   static associate (models) {
     this.hasMany(models.Description, {
       as: 'descriptions',
-      foreignKey: 'theme'
+      foreignKey: 'themeId'
     });
   }
 

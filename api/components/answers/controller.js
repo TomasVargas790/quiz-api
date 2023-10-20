@@ -1,29 +1,59 @@
-const TABLA = 'answers';
+import err from '../../../utils/error/error.js';
+import Sequelize from '../../../store/sequelize/sequelize.js';
 
-export default function (injectedStore) {
-  let store = injectedStore;
+const models = Sequelize.models;
 
-  if (!store) {
-    store = require('../../../store/dummy');
+export class AnswerClass {
+  async list () {
+    try {
+      return await models.Answer.findAll();
+    } catch (error) {
+      throw err(error, error.status);
+    }
   }
 
-  async function list ({ jwt }) {
-    console.log(jwt);
-    const users = store.list({ tabla: TABLA, jwt });
-    return users;
+  async get ({ id }) {
+    try {
+      return await models.Answer.findByPk();
+    } catch (error) {
+      throw err(error, error.status);
+    }
   }
 
-  async function get ({ id, jwt }) {
-    return store.get({ tabla: TABLA, id, jwt });
+  async insert ({ data }) {
+    try {
+      return await models.Answer.create(data);
+    } catch (error) {
+      throw err(error, error.status);
+    }
   }
 
-  async function insert ({ id, data, jwt }) {
-    return store.insert({ tabla: TABLA, data, jwt });
+  async update ({ data }) {
+    /* try {
+      return await store.update({ tabla: TABLA, data });
+    } catch (error) {
+      throw err(error, error.status);
+    } */
+    throw err('Method no implemented puto', 500);
   }
 
-  return {
-    list,
-    get,
-    insert
-  };
+  async remove ({ id }) {
+    try {
+      return await models.Answer.destroy(id);
+    } catch (error) {
+      throw err(error, error.status);
+    }
+  }
+
+  async descriptions ({ id }) {
+    try {
+      const themes = await models.Theme.findByPk(id, {
+        include: ['descriptions']
+      });
+      if (!themes) throw err('No hay registros', 404);
+      return themes;
+    } catch (error) {
+      throw err(error, error.status);
+    }
+  }
 }

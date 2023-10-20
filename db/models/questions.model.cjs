@@ -19,8 +19,8 @@ const QuestionSchema = {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true
-  },/* 
-  theme: {
+  },
+  themeId: {
     allowNull: false,
     type: DataTypes.INTEGER,
     unique: false,
@@ -30,8 +30,8 @@ const QuestionSchema = {
     },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
-  }, */
-  /* nextQuestion: {
+  },
+  nextQuestion: {
     allowNull: true,
     type: DataTypes.INTEGER,
     references: {
@@ -40,7 +40,7 @@ const QuestionSchema = {
     },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
-  }, */
+  },
   isText: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
@@ -62,12 +62,12 @@ const QuestionSchema = {
 };
 class Question extends Model {
   static associate (models) {
-   /*  this.belongsTo(models.Theme, {
+    this.belongsTo(models.Theme, {
       as: 'questions'
-    }); 
-     this.hasOne(models.Question, {
+    });
+    this.hasOne(models.Question, {
       as: 'prevQuestion'
-    }); */
+    });
   }
 
   static config (sequelize) {

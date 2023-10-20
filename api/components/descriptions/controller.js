@@ -1,29 +1,51 @@
-const TABLA = 'descriptions';
+import err from '../../../utils/error/error.js';
+import Sequelize from '../../../store/sequelize/sequelize.js';
 
-export default function (injectedStore) {
-  let store = injectedStore;
-
-  if (!store) {
-    store = require('../../../store/dummy');
+const models = Sequelize.models;
+export class DescriptionClass {
+  async list () {
+    try {
+      return await models.Description.findAll();
+    } catch (error) {
+      throw err(error, error.status);
+    }
   }
 
-  async function list ({ jwt }) {
-    console.log(jwt);
-    const users = store.list({ tabla: TABLA, jwt });
-    return users;
+  async get ({ id }) {
+    try {
+      return await models.Description.findByPk(id, {
+        include: ['theme']
+      });
+    } catch (error) {
+      console.log(error);
+      throw err(error, error.status);
+    }
   }
 
-  async function get ({ id, jwt }) {
-    return store.get({ tabla: TABLA, id, jwt });
+  async insert ({ data }) {
+    try {
+      console.log('comomomomo');
+      return await models.Description.create(data);
+    } catch (error) {
+      console.log(error);
+      throw err(error, error.status);
+    }
   }
 
-  async function insert ({ id, data, jwt }) {
-    return store.insert({ tabla: TABLA, data, jwt });
+  async update ({ data }) {
+    /* try {
+      return await store.update({ tabla: TABLA, data });
+    } catch (error) {
+      throw err(error, error.status);
+    } */
+    throw err('Method no implemented puto', 500);
   }
 
-  return {
-    list,
-    get,
-    insert
-  };
+  async remove ({ id }) {
+    try {
+      return await models.Description.destroy(id);
+    } catch (error) {
+      throw err(error, error.status);
+    }
+  }
 }

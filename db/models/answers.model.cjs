@@ -19,8 +19,8 @@ const AnswerSchema = {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true
-  },/*
-  question: {
+  },
+  questionId: {
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
@@ -30,7 +30,7 @@ const AnswerSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
   },
-   to: {
+  nextQuestion: {
     allowNull: true,
     type: DataTypes.INTEGER,
     unique: false,
@@ -40,7 +40,7 @@ const AnswerSchema = {
     },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
-  }, */
+  },
   isText: {
     allowNull: false,
     type: DataTypes.BOOLEAN,
@@ -62,7 +62,7 @@ const AnswerSchema = {
 };
 class Answer extends Model {
   static associate (models) {
-/*     this.belongsTo(models.Question, {
+    /*     this.belongsTo(models.Question, {
       as: 'fromQuestion'
     }); */
     /* this.hasOne(models.Question, {
