@@ -1,8 +1,9 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
+const { THEME_TABLE } = require('./themes.model.cjs');
 
-const THEME_TABLE = 'themes';
+const DESCRIPTION_TABLE = 'descriptions';
 
-const ThemeSchema = {
+const DescriptionSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -13,6 +14,20 @@ const ThemeSchema = {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true
+  },
+  title: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    unique: true
+  },
+  theme: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: THEME_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
   },
   createdAt: {
     allowNull: false,
@@ -27,16 +42,20 @@ const ThemeSchema = {
     defaultValue: Sequelize.NOW
   }
 };
-class Theme extends Model {
-  static associate (models) { }
+class Description extends Model {
+  static associate (models) {
+    this.belongsTo(models.Theme, {
+      as: 'theme'
+    });
+  }
 
   static config (sequelize) {
     return {
       sequelize,
-      tableName: THEME_TABLE,
-      modelName: 'Theme',
+      tableName: DESCRIPTION_TABLE,
+      modelName: 'Description',
       timestamps: false
     };
   }
 }
-module.exports = { THEME_TABLE, Theme, ThemeSchema };
+module.exports = { DESCRIPTION_TABLE, Description, DescriptionSchema };

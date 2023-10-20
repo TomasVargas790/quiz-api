@@ -28,7 +28,12 @@ const ThemeSchema = {
   }
 };
 class Theme extends Model {
-  static associate (models) { }
+  static associate (models) {
+    this.hasMany(models.Description, {
+      as: 'descriptions',
+      foreignKey: 'theme'
+    });
+  }
 
   static config (sequelize) {
     return {

@@ -1,8 +1,9 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
+const { QUESTION_TABLE } = require('./questions.model.cjs');
 
-const THEME_TABLE = 'themes';
+const ANSWER_TABLE = 'answers';
 
-const ThemeSchema = {
+const AnswerSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -13,6 +14,37 @@ const ThemeSchema = {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true
+  },
+  title: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    unique: true
+  },/*
+  question: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: QUESTION_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
+   to: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    unique: false,
+    references: {
+      model: QUESTION_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  }, */
+  isText: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    unique: false
   },
   createdAt: {
     allowNull: false,
@@ -26,17 +58,25 @@ const ThemeSchema = {
     field: 'updatedAt',
     defaultValue: Sequelize.NOW
   }
+
 };
-class Theme extends Model {
-  static associate (models) { }
+class Answer extends Model {
+  static associate (models) {
+/*     this.belongsTo(models.Question, {
+      as: 'fromQuestion'
+    }); */
+    /* this.hasOne(models.Question, {
+      as: 'nextQuestion'
+    }); */
+  }
 
   static config (sequelize) {
     return {
       sequelize,
-      tableName: THEME_TABLE,
-      modelName: 'Theme',
+      tableName: ANSWER_TABLE,
+      modelName: 'Answer',
       timestamps: false
     };
   }
 }
-module.exports = { THEME_TABLE, Theme, ThemeSchema };
+module.exports = { ANSWER_TABLE, Answer, AnswerSchema };
