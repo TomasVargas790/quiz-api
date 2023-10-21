@@ -1,18 +1,23 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const THEME_TABLE = 'themes';
+const USER_TABLE = 'users';
 
-const ThemeSchema = {
+const UserSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  description: {
+  email: {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true
+  },
+  password: {
+    allowNull: false,
+    type: DataTypes.TEXT,
+    unique: false
   },
   createdAt: {
     allowNull: false,
@@ -27,16 +32,16 @@ const ThemeSchema = {
     defaultValue: Sequelize.NOW
   }
 };
-class Theme extends Model {
+class User extends Model {
   static associate (models) { }
 
   static config (sequelize) {
     return {
       sequelize,
-      tableName: THEME_TABLE,
-      modelName: 'Theme',
+      tableName: USER_TABLE,
+      modelName: 'User',
       timestamps: false
     };
   }
 }
-module.exports = { THEME_TABLE, Theme, ThemeSchema };
+module.exports = { USER_TABLE, User, UserSchema };
