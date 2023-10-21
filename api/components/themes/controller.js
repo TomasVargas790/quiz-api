@@ -5,7 +5,12 @@ const models = Sequelize.models;
 export class ThemesClass {
   async list () {
     try {
-      return await models.Theme.findAll();
+      return await models.Theme.findAll({
+        include: ['descriptions', {
+          association: 'questions',
+          include: ['nextQuestionRef', 'prevQuestion']
+        }]
+      });
     } catch (error) {
       throw err(error, error.status);
     }
@@ -13,9 +18,12 @@ export class ThemesClass {
 
   async get ({ id }) {
     try {
-      return await models.Theme.findByPk(id);
+      const result = await models.Theme.findByPk(id);
+      if (!result) throw err('No hay registros', 404);
+      return result;
     } catch (error) {
-      throw err(error, error.status);
+      console.log(error.status);
+      throw err(error.message, error.status);
     }
   }
 
@@ -28,12 +36,13 @@ export class ThemesClass {
   }
 
   async update ({ data }) {
-    /* try {
-      return await store.update({ tabla: TABLA, data });
+    try {
+      const theme = await this.get({ id: data.id });
+      const rta = await theme.update(data);
+      return rta;
     } catch (error) {
       throw err(error, error.status);
-    } */
-    throw err('Method no implemented puto', 500);
+    }
   }
 
   async remove ({ id }) {
@@ -48,6 +57,18 @@ export class ThemesClass {
     try {
       const themes = await models.Theme.findByPk(id, {
         include: ['descriptions']
+      });
+      if (!themes) throw err('No hay registros', 404);
+      return themes;
+    } catch (error) {
+      throw err(error, error.status);
+    }
+  }
+
+  async questions ({ id }) {
+    try {
+      const themes = await models.Theme.findByPk(id, {
+        include: ['questions']
       });
       if (!themes) throw err('No hay registros', 404);
       return themes;

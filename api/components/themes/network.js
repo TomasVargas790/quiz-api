@@ -11,6 +11,7 @@ const service = new ThemesClass();
 router.get('/', list);
 router.get('/:id', validatorHandler(getThemeSchema, 'params'), get);
 router.get('/:id/descriptions', validatorHandler(getThemeSchema, 'params'), descriptions);
+router.get('/:id/questions', validatorHandler(getThemeSchema, 'params'), questions);
 router.post('/', validatorHandler(createThemeSchema, 'body'), insert);
 router.patch('/', validatorHandler(updateThemeSchema, 'body'), update);
 router.delete('/:id', remove);
@@ -60,6 +61,14 @@ async function remove (req, res, next) {
 async function descriptions (req, res, next) {
   try {
     const result = await service.descriptions({ id: req.params.id });
+    success(req, res, result, 200);
+  } catch (err) {
+    next(err, req, res);
+  }
+}
+async function questions (req, res, next) {
+  try {
+    const result = await service.questions({ id: req.params.id });
     success(req, res, result, 200);
   } catch (err) {
     next(err, req, res);

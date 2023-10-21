@@ -15,7 +15,7 @@ router.delete('/:id', remove);
 
 async function list (req, res, next) {
   try {
-    const result = await service.list({ });
+    const result = await service.list();
     success(req, res, result, 200);
   } catch (error) {
     next(error, req, res);
@@ -24,6 +24,13 @@ async function list (req, res, next) {
 async function get (req, res, next) {
   try {
     const result = await service.get({ id: req.params.id });
+    /*     const newResult = Object.entries(result).map(a => {
+      const isRef = a[0].includes('Ref');
+      if (isRef) return [a[0].replace('Ref', ''), a[1]];
+      return [...a];
+    });
+    console.log(newResult);
+  */
     success(req, res, result, 200);
   } catch (err) {
     next(err, req, res);

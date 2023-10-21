@@ -13,12 +13,14 @@ export class DescriptionClass {
 
   async get ({ id }) {
     try {
-      return await models.Description.findByPk(id, {
+      const result = await models.Description.findByPk(id, {
         include: ['theme']
       });
+      if (!result) throw err('No hay registros', 404);
+      return result;
     } catch (error) {
-      console.log(error);
-      throw err(error, error.status);
+      console.log(error.status);
+      throw err(error.message, error.status);
     }
   }
 
@@ -33,12 +35,13 @@ export class DescriptionClass {
   }
 
   async update ({ data }) {
-    /* try {
-      return await store.update({ tabla: TABLA, data });
+    try {
+      const description = await this.get({ id: data.id });
+      const rta = await description.update(data);
+      return rta;
     } catch (error) {
       throw err(error, error.status);
-    } */
-    throw err('Method no implemented puto', 500);
+    }
   }
 
   async remove ({ id }) {

@@ -3,6 +3,8 @@ const { THEME_TABLE } = require('./themes.model.cjs');
 
 const QUESTION_TABLE = 'questions';
 
+console.log(THEME_TABLE);
+
 const QuestionSchema = {
   id: {
     allowNull: false,
@@ -21,25 +23,20 @@ const QuestionSchema = {
     unique: true
   },
   themeId: {
-    allowNull: false,
     type: DataTypes.INTEGER,
-    unique: false,
+    allowNull: false,
     references: {
-      model: THEME_TABLE,
+      model: 'themes',
       key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    }
   },
   nextQuestion: {
-    allowNull: true,
     type: DataTypes.INTEGER,
+    allowNull: true,
     references: {
-      model: QUESTION_TABLE,
+      model: 'questions',
       key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    }
   },
   isText: {
     allowNull: false,
@@ -63,10 +60,19 @@ const QuestionSchema = {
 class Question extends Model {
   static associate (models) {
     this.belongsTo(models.Theme, {
-      as: 'questions'
+      as: 'theme'
+    });
+    this.belongsToMany(models.Question, {
+      as: 'prevQuestion',
+      through: models.Question,
+      foreignKey: 'nextQuestion',
+      otherKey: 'id'
+
     });
     this.hasOne(models.Question, {
-      as: 'prevQuestion'
+      sourceKey: 'nextQuestion',
+      as: 'nextQuestionRef',
+      foreignKey: 'id'
     });
   }
 

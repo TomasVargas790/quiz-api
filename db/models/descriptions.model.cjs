@@ -25,9 +25,7 @@ const DescriptionSchema = {
     references: {
       model: THEME_TABLE,
       key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    }
   },
   createdAt: {
     allowNull: false,

@@ -33,6 +33,10 @@ class Theme extends Model {
       as: 'descriptions',
       foreignKey: 'themeId'
     });
+    this.hasMany(models.Question, {
+      as: 'questions',
+      foreignKey: 'themeId'
+    });
   }
 
   static config (sequelize) {

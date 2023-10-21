@@ -21,25 +21,20 @@ const AnswerSchema = {
     unique: true
   },
   questionId: {
-    allowNull: false,
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
       model: QUESTION_TABLE,
       key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    }
   },
   nextQuestion: {
-    allowNull: true,
     type: DataTypes.INTEGER,
-    unique: false,
+    allowNull: false,
     references: {
       model: QUESTION_TABLE,
       key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    }
   },
   isText: {
     allowNull: false,
@@ -62,12 +57,15 @@ const AnswerSchema = {
 };
 class Answer extends Model {
   static associate (models) {
-    /*     this.belongsTo(models.Question, {
-      as: 'fromQuestion'
-    }); */
-    /* this.hasOne(models.Question, {
-      as: 'nextQuestion'
-    }); */
+    this.belongsTo(models.Question, {
+      as: 'questionIdRef',
+      foreignKey: 'questionId'
+    });
+    this.hasOne(models.Question, {
+      sourceKey: 'nextQuestion',
+      as: 'nextQuestionRef',
+      foreignKey: 'id'
+    });
   }
 
   static config (sequelize) {
