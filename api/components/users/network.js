@@ -13,7 +13,6 @@ router.delete('/', remove);
 
 async function insert (req, res, next) {
   try {
-    console.log('-------------------------register------------');
     const result = await service.insert({ data: req.body });
     success(req, res, result, 201);
   } catch (err) {

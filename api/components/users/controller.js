@@ -1,7 +1,7 @@
 import err from '../../../utils/error/error.js';
 import Sequelize from '../../../store/sequelize/sequelize.js';
 import bcrypt, { hash } from 'bcrypt';
-import { sign } from '../../../mysql/utils/auth/jwt.js';
+import { sign } from '../../../utils/jwt/jwt.js';
 
 const models = Sequelize.models;
 export class UserClass {
@@ -59,12 +59,11 @@ export class UserClass {
 
   async login ({ email, password }) {
     try {
-      const { dataValues: data } = await this.findByEmail({ email });
-      console.log(data);
+      const data = await this.findByEmail({ email });
       if (!data) throw err('Correo o contraseña invalido :(', 400);
       const valid = await bcrypt.compare(password, data?.password ?? '');
       if (!valid) throw err('informacion incorrecta mi loco', 400);
-      return sign(data);
+      return sign(JSON.stringify(data));
     } catch (error) {
       throw err(error, 401);
     }
